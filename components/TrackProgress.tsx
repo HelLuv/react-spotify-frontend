@@ -8,8 +8,8 @@ onChange:(e: any)=>void
 
 export const TrackProgress:React.FC<TrackProgressProps> = ({left,right,onChange}) => {
   return (
-    <div>
-      <input type="range" />
+    <div style={{display:'flex'}}>
+      <input type="range" min={left} max={right} value={left} onChange={onChange} />
         <div>{left} / {right}</div>
     </div>
   );
