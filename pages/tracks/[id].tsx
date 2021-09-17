@@ -30,7 +30,8 @@ const TrackPage = ({serverTrack}) => {
   };
 
   return (
-    <MainLayout>
+    <MainLayout title={"Music service — " + track.name + " — " + track.artist}
+                keywords={'Music, artist, ' + track.name + ", " + track.artist}>
       <Button startIcon={<ChevronLeftIcon/>} variant="outlined" color="primary" onClick={() => router.push('/tracks')}>
         To tracks list
       </Button>

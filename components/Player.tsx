@@ -13,6 +13,7 @@ export const Player: React.FC = () => {
   const {pause, volume, active, duration, currentTime} = useTypedSelector(state => state.player);
   const {pauseTrack, playTrack, setVolume, setCurrentTime, setDuration, setActiveTrack} = useActions();
 
+
   useEffect(() => {
     if (!audio) {
       audio = new Audio();
@@ -20,7 +21,7 @@ export const Player: React.FC = () => {
       setAudio();
       play();
     }
-  }, [active])
+  }, [active]);
 
   const setAudio = () => {
     if (active) {
@@ -57,13 +58,6 @@ export const Player: React.FC = () => {
     audio.currentTime = Number(e.target.value)
     setCurrentTime(Number(e.target.value))
   }
-  const formatDuration = (duration: number) => {
-    let min = Math.floor(duration / 60 % 60);
-    let sec = Math.floor(duration % 60);
-    let refMin = min < 10 ? '0' + min : min;
-    let refSec = sec < 10 ? '0' + sec : sec;
-    return [refMin, refSec];
-  }
 
   return (
     <div className={cl.player}>
@@ -79,9 +73,9 @@ export const Player: React.FC = () => {
           <div className={cl.track__artist}>{active?.artist}</div>
         </Box>
       </Grid>
-      <TrackProgress left={currentTime} right={duration} onChange={changeCurrentTime}/>
+      <TrackProgress isTime={true} current={currentTime} total={duration} onChange={changeCurrentTime}/>
       <VolumeUp style={{marginLeft: 'auto'}}/>
-      <TrackProgress left={volume} right={100} onChange={(e) => {
+      <TrackProgress current={volume} total={100} onChange={(e) => {
         changeVolume(e)
       }}/>
     </div>

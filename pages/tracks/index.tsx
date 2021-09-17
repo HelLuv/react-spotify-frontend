@@ -17,7 +17,7 @@ export default function Index() {
   }
 
   return (
-    <MainLayout>
+    <MainLayout title={"Track List - Music Service"}>
       <Grid container justifyContent={'center'}>
         <Card style={{width: 900}} elevation={1}>
           <Box paddingX={3}>
