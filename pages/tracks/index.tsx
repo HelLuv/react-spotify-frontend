@@ -1,19 +1,39 @@
-import {Box, Button, Card, Grid} from '@material-ui/core';
-import React from 'react'
+import {Box, Button, Card, Grid, TextField} from '@material-ui/core';
+import React, {useState} from 'react'
 import {MainLayout} from '../../layouts/MainLayout';
 import {useRouter} from 'next/router';
 import {ITrack} from '../../types/track';
 import {TrackList} from '../../components/TrackList';
 import {useTypedSelector} from "../../hooks/useTypedSelector";
 import {NextThunkDispatch, wrapper} from "../../store";
-import {fetchTracks} from "../../store/action-creators/track";
+import {fetchTracks, searchTracks} from "../../store/action-creators/track";
+import {useDispatch} from "react-redux";
+
 
 export default function Index() {
   const router = useRouter();
   const {tracks, error} = useTypedSelector(state => state.track);
+  const [query, setQuery] = useState<string>('');
+  const dispatch = useDispatch() as NextThunkDispatch;
+  const [timer, setTimer] = useState(null);
 
   if (error) {
     return <MainLayout><h1>{error}</h1></MainLayout>
+  }
+
+  const search = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
+    if (timer) {
+      clearTimeout(timer)
+    }
+
+    setTimer(
+      // @ts-ignore
+      setTimeout(async () => {
+        await dispatch(searchTracks(e.target.value));
+      }, 500)
+    );
+
   }
 
   return (
@@ -27,6 +47,9 @@ export default function Index() {
                 Upload
               </Button>
             </Grid>
+          </Box>
+          <Box paddingX={3}>
+            <TextField fullWidth value={query} onChange={search}/>
           </Box>
           <TrackList tracks={tracks}/>
         </Card>
