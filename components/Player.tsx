@@ -7,21 +7,11 @@ import {TrackProgress} from "./TrackProgress";
 import {useTypedSelector} from "../hooks/useTypedSelector";
 import {useActions} from "../hooks/useActions";
 
-
 let audio: any;
+
 export const Player: React.FC = () => {
-  const track: ITrack = {
-    _id: '1',
-    name: 'Track 1',
-    artist: 'Artist 1',
-    text: 'Some lyrics',
-    listens: 1,
-    audio: 'http://localhost:5000/audio/b041cc8a-b292-47f0-9ac5-ac457ef7cf70.mp3',
-    picture: 'http://localhost:5000/image/14894f19-cc12-4734-bed9-1691f3d4e0c1.jpg',
-    comments: []
-  };
-  const {volume, duration, active, currentTime, pause} = useTypedSelector(state => state.player);
-  const {playTrack, pauseTrack, setVolume, setActiveTrack, setDuration, setCurrentTime} = useActions();
+  const {pause, volume, active, duration, currentTime} = useTypedSelector(state => state.player);
+  const {pauseTrack, playTrack, setVolume, setCurrentTime, setDuration, setActiveTrack} = useActions();
 
   useEffect(() => {
     if (!audio) {
@@ -34,7 +24,7 @@ export const Player: React.FC = () => {
 
   const setAudio = () => {
     if (active) {
-      audio.src = active.audio
+      audio.src = 'http://localhost:5000/' + active.audio
       audio.volume = volume / 100
       audio.onloadedmetadata = () => {
         setDuration(Math.ceil(audio.duration))
